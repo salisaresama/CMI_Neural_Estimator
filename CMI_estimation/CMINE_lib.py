@@ -206,6 +206,8 @@ def train_classifier(BatchTrain, TargetTrain, Params, Epoch, Lr, Seed, Epsilon=1
     torch.manual_seed(Seed)
     (input_size, hidden_size, num_classes, tau) = Params
     model = ClassifierModel(input_size, hidden_size, num_classes, tau)    
+    if torch.cuda.is_available():
+        model = model.cuda()
     opt = optim.Adam(params=model.parameters(), lr=Lr)
 
     for epoch in range(int(Epoch)):
