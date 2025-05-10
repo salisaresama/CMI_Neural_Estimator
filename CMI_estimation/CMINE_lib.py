@@ -177,8 +177,8 @@ class ClassifierModel(nn.Module):
 
 
 def estimate_CMI(Model, JointBatch, ProdBatch):
-    gamma_joint = Model(JointBatch).detach().numpy()[:,0]
-    gamma_prod = Model(ProdBatch).detach().numpy()[:,0]
+    gamma_joint = Model(JointBatch).detach().cpu().numpy()[:,0]
+    gamma_prod = Model(ProdBatch).detach().cpu().numpy()[:,0]
     
     b  = JointBatch.shape[0]
     b_ = ProdBatch.shape[0]
@@ -215,7 +215,7 @@ def train_classifier(BatchTrain, TargetTrain, Params, Epoch, Lr, Seed, Epsilon=1
         _, pred = out.max(1)        
 
         loss = F.binary_cross_entropy(out, TargetTrain) 
-        loss_e.append(loss.detach().numpy())
+        loss_e.append(loss.detach().cpu().numpy())
         
         if Eval:
             CMI_eval = estimate_CMI(model,JointEval,ProdEval)
